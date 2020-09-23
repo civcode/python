@@ -2,6 +2,7 @@ import json
 import os
 import signal
 import threading
+import time
 
 def handler(signum, frame):
     raise Exception("timeout")
@@ -31,11 +32,13 @@ def run_test(port_start, port_stop, timout):
         try:
             out = probe_port(port)
             output.append(out)
+            time.sleep(timeout)
         except Exception as exc:
             #print(exc)
             print('Port ' + str(port) + ' is blocked.')
             continue
-
+            
+        #time.sleep(2)
         #signal.alarm(0)
         #signal.setitimer(signal.ITIMER_REAL, 0)
         #signal.setitimer(0)
@@ -46,14 +49,15 @@ def run_test(port_start, port_stop, timout):
         json.dump(output, f)
 
 if __name__ == "__main__":
-    timeout = 0.2
+    #timeout = 0.2
+    timeout = 1.5
     
     #a = threading.Thread(target=run_test, args=(20, 50, timeout))
     #a.start()
     #a.join()
 
     #run_test(20, 50, timeout)
-    run_test(1000, 2000, timeout)
+    run_test(1, 100, timeout)
 
 #stream = os.popen('echo Retuned output')
 #output = stream.read()
